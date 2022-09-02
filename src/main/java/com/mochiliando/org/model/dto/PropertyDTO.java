@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 public class PropertyDTO {
 
+    private Long id;
     private String title;
     private String description;
     private String userName;
