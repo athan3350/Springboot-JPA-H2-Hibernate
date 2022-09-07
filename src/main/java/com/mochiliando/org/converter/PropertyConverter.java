@@ -9,15 +9,15 @@ public class PropertyConverter {
 
     public PropertyEntity convertDTOtoEntity (PropertyDTO propertyDTO) {
 
-        PropertyEntity pe = new PropertyEntity();
-        pe.setTitle(propertyDTO.getTitle());
-        pe.setDescription(propertyDTO.getDescription());
-        pe.setAddress(propertyDTO.getAddress());
-        pe.setPrice(propertyDTO.getPrice());
-        pe.setOwnerEmail(propertyDTO.getOwnerEmail());
-        pe.setUserName(propertyDTO.getUserName());
+        PropertyEntity propertyEntity = new PropertyEntity();
+        propertyEntity.setTitle(propertyDTO.getTitle());
+        propertyEntity.setDescription(propertyDTO.getDescription());
+        propertyEntity.setAddress(propertyDTO.getAddress());
+        propertyEntity.setPrice(propertyDTO.getPrice());
+        propertyEntity.setOwnerEmail(propertyDTO.getOwnerEmail());
+        propertyEntity.setUserName(propertyDTO.getUserName());
 
-        return pe;
+        return propertyEntity;
 
     }
 

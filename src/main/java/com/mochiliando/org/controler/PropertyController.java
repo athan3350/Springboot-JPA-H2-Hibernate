@@ -2,7 +2,6 @@ package com.mochiliando.org.controler;
 
 import com.mochiliando.org.model.dto.PropertyDTO;
 import com.mochiliando.org.service.PropertyService;
-import org.aspectj.apache.bcel.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
