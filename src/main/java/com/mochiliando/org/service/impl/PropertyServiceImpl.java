@@ -1,9 +1,10 @@
-package com.mochiliando.org.service;
+package com.mochiliando.org.service.impl;
 
 import com.mochiliando.org.converter.PropertyConverter;
 import com.mochiliando.org.entity.PropertyEntity;
 import com.mochiliando.org.model.dto.PropertyDTO;
 import com.mochiliando.org.repository.PropertyRepository;
+import com.mochiliando.org.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

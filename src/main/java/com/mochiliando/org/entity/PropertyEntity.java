@@ -25,12 +25,4 @@ public class PropertyEntity {
     private String price;
     private String address;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
 }
