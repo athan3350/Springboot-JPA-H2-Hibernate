@@ -2,6 +2,8 @@ package com.mochiliando.org.service.impl;
 
 import com.mochiliando.org.converter.UserConverter;
 import com.mochiliando.org.entity.UserEntity;
+import com.mochiliando.org.exception.BusinessException;
+import com.mochiliando.org.exception.ErrorModule;
 import com.mochiliando.org.model.dto.UserDTO;
 import com.mochiliando.org.repository.UserRepository;
 import com.mochiliando.org.service.UserService;
@@ -29,9 +31,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO login(String email, String password) {
+    public UserDTO login(String email, String password){
         Optional<UserEntity> optionalUserEntity = userRepository.findByOwnerEmailAndPassword(email, password);
-        return optionalUserEntity.map(userEntity -> userConverter.convertEntityToDTO(userEntity)).orElse(null);
+
+        if (optionalUserEntity.isPresent()) {
+             return userConverter.convertEntityToDTO(optionalUserEntity.get());
+        }
+        List<ErrorModule> errorModuleList = new ArrayList<>();
+        ErrorModule errorModule = new ErrorModule();
+        errorModule.setErrorMessage("Incorrect Email or Password");
+        errorModule.setCode("INVALID_LOGIN");
+        errorModuleList.add(errorModule);
+
+        throw new BusinessException(errorModuleList);
+
     }
 
     @Override
