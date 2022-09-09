@@ -3,7 +3,7 @@ package com.mochiliando.org.service.impl;
 import com.mochiliando.org.converter.UserConverter;
 import com.mochiliando.org.entity.UserEntity;
 import com.mochiliando.org.exception.BusinessException;
-import com.mochiliando.org.exception.ErrorModule;
+import com.mochiliando.org.exception.ErrorModel;
 import com.mochiliando.org.model.dto.UserDTO;
 import com.mochiliando.org.repository.UserRepository;
 import com.mochiliando.org.service.UserService;
@@ -25,6 +25,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO registerUser(UserDTO userDTO) {
+
+        Optional<UserEntity> optionalUserEntity = userRepository.findByOwnerEmail(userDTO.getOwnerEmail());
+
+        if (optionalUserEntity.isPresent()) {
+            List<ErrorModel> errorModuleList = new ArrayList<>();
+            ErrorModel errorModule = new ErrorModel();
+            errorModule.setErrorMessage("The password already exist");
+            errorModule.setCode("EMAIL_ALREADY_EXIST");
+            errorModuleList.add(errorModule);
+
+            throw new BusinessException(errorModuleList);
+        }
         UserEntity userEntity = userConverter.convertDTOtoEntity(userDTO);
         userEntity = userRepository.save(userEntity);
         return userConverter.convertEntityToDTO(userEntity);
@@ -37,8 +49,8 @@ public class UserServiceImpl implements UserService {
         if (optionalUserEntity.isPresent()) {
              return userConverter.convertEntityToDTO(optionalUserEntity.get());
         }
-        List<ErrorModule> errorModuleList = new ArrayList<>();
-        ErrorModule errorModule = new ErrorModule();
+        List<ErrorModel> errorModuleList = new ArrayList<>();
+        ErrorModel errorModule = new ErrorModel();
         errorModule.setErrorMessage("Incorrect Email or Password");
         errorModule.setCode("INVALID_LOGIN");
         errorModuleList.add(errorModule);
@@ -50,9 +62,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> getAllUsers() {
         List<UserDTO> userDTOS = new ArrayList<>();
-
-        userRepository.findAll().forEach((UserEntity userEntity) ->
-                userDTOS.add(userConverter.convertEntityToDTO(userEntity)));
+        userRepository.findAll().forEach((UserEntity userEntity) -> userDTOS.add(userConverter.convertEntityToDTO(userEntity)));
 
         return userDTOS;
     }
