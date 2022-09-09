@@ -9,10 +9,10 @@ import java.util.List;
 @Setter
 public class BusinessException extends RuntimeException {
 
-    private List<ErrorModule> errors;
+    private List<ErrorModel> errors;
 
     public BusinessException () {}
-    public BusinessException (List<ErrorModule> errors) {
+    public BusinessException (List<ErrorModel> errors) {
         this.errors = errors;
     }
 }

@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ErrorModule {
+public class ErrorModel {
     private String code;
     private String errorMessage;
 
