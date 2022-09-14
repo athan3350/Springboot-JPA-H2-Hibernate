@@ -51,6 +51,7 @@ Latest commit 4444749 on 14 May 2021
 .settings
 .springBeans
 .vscode
+./logs/
 /code
 MANIFEST.MF
 _site/
