@@ -1,7 +1,9 @@
 package com.mochiliando.org;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
@@ -12,4 +14,8 @@ public class MochiliandoProjectApplication {
 		SpringApplication.run(MochiliandoProjectApplication.class, args);
 	}
 
+	@Bean
+	public ModelMapper modelMapper(){
+		return new ModelMapper();
+	}
 }

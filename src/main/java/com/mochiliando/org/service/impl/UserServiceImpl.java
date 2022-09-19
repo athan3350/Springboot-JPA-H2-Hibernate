@@ -7,6 +7,7 @@ import com.mochiliando.org.exception.ErrorModel;
 import com.mochiliando.org.model.dto.UserDTO;
 import com.mochiliando.org.repository.UserRepository;
 import com.mochiliando.org.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserConverter userConverter;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
     public UserDTO registerUser(UserDTO userDTO) {
 
@@ -37,17 +41,19 @@ public class UserServiceImpl implements UserService {
 
             throw new BusinessException(errorModuleList);
         }
-        UserEntity userEntity = userConverter.convertDTOtoEntity(userDTO);
-        userEntity = userRepository.save(userEntity);
+
+        UserEntity userEntity = userRepository.save(this.modelMapper.map(userDTO, UserEntity.class));
+
+
         return userConverter.convertEntityToDTO(userEntity);
     }
 
     @Override
-    public UserDTO login(String email, String password){
+    public UserDTO login(String email, String password) {
         Optional<UserEntity> optionalUserEntity = userRepository.findByOwnerEmailAndPassword(email, password);
 
         if (optionalUserEntity.isPresent()) {
-             return userConverter.convertEntityToDTO(optionalUserEntity.get());
+            return userConverter.convertEntityToDTO(optionalUserEntity.get());
         }
         List<ErrorModel> errorModuleList = new ArrayList<>();
         ErrorModel errorModule = new ErrorModel();
