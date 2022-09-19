@@ -1,10 +1,10 @@
 package com.mochiliando.org.service.impl;
 
-import com.mochiliando.org.converter.PropertyConverter;
 import com.mochiliando.org.entity.PropertyEntity;
 import com.mochiliando.org.model.dto.PropertyDTO;
 import com.mochiliando.org.repository.PropertyRepository;
 import com.mochiliando.org.service.PropertyService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,22 +19,20 @@ public class PropertyServiceImpl implements PropertyService{
     private PropertyRepository propertyRepository;
 
     @Autowired
-    private PropertyConverter propertyConverter;
+    private ModelMapper modelMapper;
 
     @Override
     public PropertyDTO saveProperty(PropertyDTO propertyDTO) {
-        PropertyEntity pe = propertyConverter.convertDTOtoEntity(propertyDTO);
-        pe = propertyRepository.save(pe);
-        return propertyConverter.convertEntityToDTO(pe);
+        PropertyEntity propertyEntity = propertyRepository.save(this.modelMapper.map(propertyDTO, PropertyEntity.class));
+        return modelMapper.map(propertyEntity, PropertyDTO.class);
     }
 
     @Override
     public List<PropertyDTO> getAllProperties() {
         List<PropertyDTO> propertyDTOS = new ArrayList<>();
-
         propertyRepository.findAll()
                 .forEach((PropertyEntity pr) ->
-                        propertyDTOS.add(propertyConverter.convertEntityToDTO(pr)));
+                        propertyDTOS.add(this.modelMapper.map(pr, PropertyDTO.class)));
 
         return propertyDTOS;
     }
@@ -43,21 +41,11 @@ public class PropertyServiceImpl implements PropertyService{
     public PropertyDTO updateProperty(PropertyDTO propertyDTO, Long propertyId) {
 
         Optional<PropertyEntity> optionalPropertyEntity = propertyRepository.findById(propertyId);
-        PropertyDTO dto = null;
-
+        PropertyEntity propertyEntity = null;
         if (optionalPropertyEntity.isPresent()) {
-            PropertyEntity pe = optionalPropertyEntity.get();
-            pe.setTitle(propertyDTO.getTitle());
-            pe.setDescription(propertyDTO.getDescription());
-            pe.setAddress(propertyDTO.getAddress());
-            pe.setPrice(propertyDTO.getPrice());
-            pe.setOwnerEmail(propertyDTO.getOwnerEmail());
-            pe.setUserName(propertyDTO.getUserName());
-
-            dto = propertyConverter.convertEntityToDTO(pe);
-            propertyRepository.save(pe);
+            propertyEntity =  propertyRepository.save(this.modelMapper.map(propertyDTO, PropertyEntity.class));
         }
-        return dto;
+        return modelMapper.map(propertyEntity, PropertyDTO.class);
     }
 
     @Override
